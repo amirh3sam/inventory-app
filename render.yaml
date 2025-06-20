@@ -11,10 +11,7 @@ services:
         value: production
       - key: PORT
         value: 10000
-    disk:
-      name: inventory-data
-      mountPath: /opt/render/project/src
-      sizeGB: 1
+
     autoDeploy: true
     branch: main
     rootDir: ./
