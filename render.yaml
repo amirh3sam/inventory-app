@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: inventory-pro
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    disk:
+      name: inventory-data
+      mountPath: /opt/render/project/src
+      sizeGB: 1
+    autoDeploy: true
+    branch: main
+    rootDir: ./
+    region: oregon
