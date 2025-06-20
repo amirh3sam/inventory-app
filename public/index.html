@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Pro - Electronics Management</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 Inventory Pro</h1>
+            <p>Advanced Electronics Management System</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="add">
+                ➕ Add New Item
+            </button>
+            <button class="tab-button" data-tab="view">
+                📋 View Inventory
+            </button>
+        </div>
+
+        <div class="tab-content">
+            <div id="add" class="tab-pane active">
+                <div class="form-container">
+                    <form id="itemForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <input type="text" id="name" class="form-control" placeholder="Item Name *" required />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="manufacturer" class="form-control" placeholder="Manufacturer (optional)" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="model" class="form-control" placeholder="Model (optional)" />
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="quantity" class="form-control" placeholder="Quantity *" required min="0" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="location" class="form-control" placeholder="Location *" required />
+                            </div>
+                            <div class="form-group full-width">
+                                <textarea id="description" class="form-control" placeholder="Description (optional)" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Add to Inventory
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="view" class="tab-pane">
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search inventory..." />
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th>Qty</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemTable">
+                            <!-- Items will be loaded here -->
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <h3>No Items Found</h3>
+                        <p>Start by adding your first inventory item!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Action</h3>
+            <p id="confirmText"></p>
+            <div class="modal-buttons">
+                <button id="confirmYes" class="btn btn-success">Yes</button>
+                <button id="confirmNo" class="btn btn-danger">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
