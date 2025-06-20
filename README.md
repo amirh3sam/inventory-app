@@ -183,9 +183,6 @@ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 4. Push to branch: `git push origin feature/amazing-feature`
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🌟 Acknowledgments
 
@@ -194,15 +191,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Responsive design best practices
 - Express.js and SQLite communities
 
-## 📞 Support
 
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/yourusername/inventory-pro/issues) page
-2. Create a new issue with detailed information
-3. Include screenshots if reporting UI bugs
-
----
 
 **Made with ❤️ for electronics enthusiasts and inventory managers**
 
