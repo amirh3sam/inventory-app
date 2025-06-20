@@ -13,6 +13,5 @@ services:
         value: 10000
 
     autoDeploy: true
-    branch: main
     rootDir: ./
     region: oregon
