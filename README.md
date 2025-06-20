@@ -2,7 +2,7 @@
 
 A modern, responsive web application for managing electronics inventory with real-time updates, inline editing, and a beautiful glassmorphic UI design.
 
-![Inventory Pro Screenshot](https://via.placeholder.com/800x400/667eea/ffffff?text=Inventory+Pro+Interface)
+
 
 ## ✨ Features
 
