@@ -1,198 +1,197 @@
-# 📦 Inventory Pro - Electronics Management System
+<p align="center">
+  <img src="assets/banner.svg" alt="Inventory Pro. Track electronics stock with inline editing, live search and a small REST API." width="100%">
+</p>
 
-A modern, responsive web application for managing electronics inventory with real-time updates, inline editing, and a beautiful glassmorphic UI design.
+<p align="center">
+  <img alt="Node.js" src="https://img.shields.io/badge/Node.js-18%2B-a98bff?style=flat-square&labelColor=0a0e14">
+  <img alt="Express" src="https://img.shields.io/badge/Express-4-a98bff?style=flat-square&labelColor=0a0e14">
+  <img alt="SQLite" src="https://img.shields.io/badge/SQLite-file%20based-a98bff?style=flat-square&labelColor=0a0e14">
+  <img alt="4 endpoints" src="https://img.shields.io/badge/endpoints-4-3fe0c5?style=flat-square&labelColor=0a0e14">
+  <img alt="No build step" src="https://img.shields.io/badge/build%20step-none-3fe0c5?style=flat-square&labelColor=0a0e14">
+  <a href="https://github.com/amirh3sam/inventory-app/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/amirh3sam/inventory-app?style=flat-square&labelColor=0a0e14&color=f5c451"></a>
+</p>
 
+<p align="center">
+  <a href="#quick-start"><b>Quick start</b></a> ·
+  <a href="#using-it">Using it</a> ·
+  <a href="#the-api">The API</a> ·
+  <a href="#deploying">Deploying</a> ·
+  <a href="#faq">FAQ</a>
+</p>
 
+Most inventory tools want an account, a subscription and a week of setup before they will tell you how many HDMI cables are in the cupboard.
 
-## ✨ Features
+This one is a single Node process and a file. Run it, open the page, start typing. The data lives in a SQLite file next to the code, which means there is no database server to install and a backup is a file copy.
 
-### 🎯 Core Functionality
-- **Add Items**: Quick form to add new inventory items with validation
-- **View & Search**: Real-time search through all inventory items
-- **Inline Editing**: Edit items directly in the table without forms
-- **Delete Items**: Remove items with confirmation dialogs
-- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **Edit in place.** Click a cell, change it, press Enter. There is no edit form and no separate page.
+- **Search as you type**, filtering the whole table while you type.
+- **A real REST API underneath**, so the same data is reachable from scripts or any other tool.
+- **No build step.** Plain HTML, CSS and JavaScript on the front, Express on the back.
 
-### 🎨 Modern UI/UX
-- **Glassmorphic Design**: Beautiful blur effects and modern styling
-- **Smooth Animations**: Fade-in transitions and hover effects
-- **Mobile-First**: Card-based layout on mobile devices
-- **Interactive Elements**: Hover states and micro-interactions
-- **Toast Notifications**: Real-time feedback for user actions
+## Quick start
 
-### 🔧 Technical Features
-- **Real-time Updates**: Instant data synchronization
-- **SQLite Database**: Lightweight, serverless database
-- **RESTful API**: Clean API endpoints for all operations
-- **Error Handling**: Comprehensive error management
-- **Confirmation Dialogs**: Prevent accidental deletions
+You need **Node.js 18 or newer**.
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/inventory-pro.git
-   cd inventory-pro
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install express sqlite3 body-parser cors
-   ```
-
-3. **Start the server**
-   ```bash
-   node server.js
-   ```
-   
-   Or use npm script:
-   ```bash
-   npm start
-   ```
-
-4. **Open your browser**
-   ```
-   http://localhost:3000
-   ```
-
-That's it! 🎉 Your inventory system is now running.
-
-## 📁 Project Structure
-
-```
-inventory-pro/
-├── public/
-│   ├── index.html      # Main HTML file
-│   ├── styles.css      # All styles and responsive design
-│   └── script.js       # Frontend JavaScript logic
-├── server.js           # Express server and API endpoints
-├── package.json        # Dependencies and scripts
-├── .gitignore          # Git ignore file
-├── database.db         # SQLite database (auto-created)
-└── README.md           # Documentation
+```bash
+git clone https://github.com/amirh3sam/inventory-app.git
+cd inventory-app
+npm install
+npm start
 ```
 
-## 🛠️ Usage Guide
+Open **http://localhost:3000**.
 
-### Adding Items
-1. Click the "➕ Add New Item" tab
-2. Fill in the required fields (marked with *)
-3. Optional fields will show "N/A" if left empty
-4. Click "Add to Inventory" and confirm
+The database file is created on first run, so there is nothing to set up. For development with automatic restarts:
 
-### Managing Inventory
-1. Switch to "📋 View Inventory" tab
-2. Use the search bar to find specific items
-3. Click directly on any cell to edit inline
-4. Use "Update" button to save changes
-5. Use "Delete" button to remove items
+```bash
+npm run dev
+```
 
-### Search & Filter
-- **Real-time search**: Type in the search box to instantly filter results
-- **Search all fields**: Searches across name, manufacturer, model, location, and description
-- **Clear results**: Shows "No Results Found" when no matches
+## Using it
 
-## 🔧 API Endpoints
+Each item carries the fields you actually need to find a thing again:
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/items` | Get all inventory items |
-| `POST` | `/api/items` | Add a new item |
-| `PUT` | `/api/items/:id` | Update an existing item |
-| `DELETE` | `/api/items/:id` | Delete an item |
+| Field | What it holds |
+|---|---|
+| `name` | What the item is |
+| `manufacturer` | Who made it |
+| `model` | Model or part number |
+| `quantity` | How many you have |
+| `location` | Where it is: shelf, drawer, room |
+| `description` | Anything else worth writing down |
 
-### Example API Usage
+**Adding** is a short form at the top. **Editing** happens in the table itself, no form involved. **Searching** filters as you type across every field, so a shelf name finds everything on that shelf. **Deleting** asks first.
 
-**Add Item:**
+> [!TIP]
+> `location` is the field that earns its keep. Six months from now you will not remember where you put something, and a consistent naming scheme such as `Shelf B / Bin 3` makes the search genuinely useful.
+
+## The API
+
+The browser page is just one client. Everything it does is available over HTTP.
+
+| Method | Path | What it does |
+|---|---|---|
+| `GET` | `/api/items` | Every item |
+| `POST` | `/api/items` | Add an item |
+| `PUT` | `/api/items/:id` | Update an item |
+| `DELETE` | `/api/items/:id` | Remove an item |
+
+<details>
+<summary><b>Examples</b></summary>
+
+List everything:
+
+```bash
+curl http://localhost:3000/api/items
+```
+
+Add an item:
+
 ```bash
 curl -X POST http://localhost:3000/api/items \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Arduino Uno",
-    "manufacturer": "Arduino",
-    "model": "R3",
-    "quantity": 5,
-    "location": "Lab A",
-    "description": "Microcontroller board"
+    "name": "HDMI Cable 2m",
+    "manufacturer": "Generic",
+    "model": "HDMI-2M",
+    "quantity": 12,
+    "location": "Shelf B / Bin 3",
+    "description": "High speed, 4K60"
   }'
 ```
 
-## 📱 Mobile Experience
+Update one:
 
-Inventory Pro is fully responsive with a mobile-first design:
-
-- **Card Layout**: Items display as cards on mobile devices
-- **Touch-Friendly**: Large buttons and touch targets
-- **Swipe Gestures**: Smooth scrolling and interactions
-- **Optimized Forms**: Mobile-optimized input fields
-
-## 🎨 Customization
-
-### Changing Colors
-The app uses CSS custom properties. Edit the gradient colors in `styles.css`:
-
-```css
-/* Main gradient */
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-
-/* Button gradients */
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+```bash
+curl -X PUT http://localhost:3000/api/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"quantity": 10}'
 ```
 
-### Adding Fields
-1. Update the database schema in `server.js`
-2. Add form fields in `index.html`
-3. Update the API endpoints to handle new fields
-4. Modify the frontend JavaScript to manage new data
+Delete one:
 
-## 🔒 Security Features
+```bash
+curl -X DELETE http://localhost:3000/api/items/1
+```
 
-- **Input Validation**: Required field validation on frontend and backend
-- **SQL Injection Protection**: Parameterized queries
-- **XSS Prevention**: Proper data sanitization
-- **CORS Configuration**: Controlled cross-origin requests
+</details>
 
-## 🐛 Troubleshooting
+CORS is enabled, so you can call the API from a page served somewhere else.
 
-### Common Issues
+## Deploying
 
-**Database not found**
-- The SQLite database is created automatically on first run
-- Check file permissions in the project directory
+[`render.yaml`](render.yaml) is included, so [Render](https://render.com) picks up the build and start commands from the repository.
 
-**Port already in use**
-- Change the port in `server.js`: `app.listen(3001, ...)`
-- Or kill the process using port 3000
+> [!WARNING]
+> **Two lines in [`server.js`](server.js) need changing before a deploy will succeed.** Both are fine locally, which is why they are easy to miss.
+>
+> **1. The port is hardcoded.** Hosting platforms tell the app which port to listen on through the `PORT` environment variable, and `render.yaml` sets it to `10000`. Line 56 ignores it:
+>
+> ```js
+> app.listen(process.env.PORT || 3000, () => {
+> ```
+>
+> **2. There is no `/health` route**, but `render.yaml` sets `healthCheckPath: /health`. Add one before `app.listen`:
+>
+> ```js
+> app.get("/health", (req, res) => res.json({ status: "ok" }));
+> ```
+>
+> Without the first fix the platform cannot reach the app at all. Without the second it keeps restarting a container that is actually running fine.
 
-**Items not loading**
-- Check browser console for JavaScript errors
-- Ensure the server is running on the correct port
-- Verify API endpoints are responding
+Anywhere else that runs Node, the same two commands apply:
 
-## 🤝 Contributing
+```bash
+npm install
+npm start
+```
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Submit a pull request
+> [!IMPORTANT]
+> SQLite writes to a file on local disk. On a platform with an ephemeral filesystem, Render's free tier included, that file is wiped on every redeploy and restart. Fine for trying it out, not fine for data you intend to keep. Attach a persistent disk, or move to Postgres, before it holds anything you would miss.
 
+## FAQ
 
-## 🌟 Acknowledgments
+<details>
+<summary><b>Where is my data?</b></summary>
 
-- Modern CSS design patterns
-- Glassmorphism UI trend
-- Responsive design best practices
-- Express.js and SQLite communities
+In `database.db` in the project folder. Copy that file to back everything up, or open it with DBeaver or any SQLite tool to look inside.
 
+</details>
 
+<details>
+<summary><b>How do I start over?</b></summary>
 
-**Made with ❤️ for electronics enthusiasts and inventory managers**
+Stop the server, delete `database.db`, and start it again. A fresh empty table is created on boot.
 
-⭐ **Star this repo if you find it helpful!**
+</details>
+
+<details>
+<summary><b>Port 3000 is already in use</b></summary>
+
+The port is currently written into [`server.js`](server.js) rather than read from the environment, so `PORT=3001 npm start` has no effect. Either change the number on line 56, or make it configurable once and for all:
+
+```js
+app.listen(process.env.PORT || 3000, () => {
+```
+
+</details>
+
+<details>
+<summary><b>Can I add my own fields?</b></summary>
+
+Yes. Add the column to the `CREATE TABLE` statement in [`server.js`](server.js), include it in the `POST` and `PUT` handlers, and add the input and table cell in [`public/index.html`](public/index.html). An existing database will not gain the column by itself, so delete the file or run an `ALTER TABLE`.
+
+</details>
+
+<details>
+<summary><b>Is there a login?</b></summary>
+
+No. Anyone who can reach the page can change the data, so keep it on your own network unless you add authentication first.
+
+</details>
+
+## About
+
+Made by **[AmirHesam Tech](https://amirhesamtech.com)**. More tech content on TikTok: [@techwithamirh3sam](https://www.tiktok.com/@techwithamirh3sam).
+
+If this repo saved you some time, please give it a star. It helps other people find it.
