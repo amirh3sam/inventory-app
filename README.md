@@ -122,22 +122,12 @@ CORS is enabled, so you can call the API from a page served somewhere else.
 
 [`render.yaml`](render.yaml) is included, so [Render](https://render.com) picks up the build and start commands from the repository.
 
-> [!WARNING]
-> **Two lines in [`server.js`](server.js) need changing before a deploy will succeed.** Both are fine locally, which is why they are easy to miss.
->
-> **1. The port is hardcoded.** Hosting platforms tell the app which port to listen on through the `PORT` environment variable, and `render.yaml` sets it to `10000`. Line 56 ignores it:
->
-> ```js
-> app.listen(process.env.PORT || 3000, () => {
-> ```
->
-> **2. There is no `/health` route**, but `render.yaml` sets `healthCheckPath: /health`. Add one before `app.listen`:
->
-> ```js
-> app.get("/health", (req, res) => res.json({ status: "ok" }));
-> ```
->
-> Without the first fix the platform cannot reach the app at all. Without the second it keeps restarting a container that is actually running fine.
+The app reads its port from the `PORT` environment variable, which is how hosting platforms assign one, and answers a health check at `/health` so the platform can tell a running container from a dead one:
+
+```bash
+curl https://your-app.onrender.com/health
+{"status":"ok"}
+```
 
 Anywhere else that runs Node, the same two commands apply:
 
@@ -168,10 +158,10 @@ Stop the server, delete `database.db`, and start it again. A fresh empty table i
 <details>
 <summary><b>Port 3000 is already in use</b></summary>
 
-The port is currently written into [`server.js`](server.js) rather than read from the environment, so `PORT=3001 npm start` has no effect. Either change the number on line 56, or make it configurable once and for all:
+Start it on another port:
 
-```js
-app.listen(process.env.PORT || 3000, () => {
+```bash
+PORT=3001 npm start
 ```
 
 </details>

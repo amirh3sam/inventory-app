@@ -53,9 +53,6 @@ app.delete("/api/items/:id", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server running at http://localhost:3000");
-});
 // Update item
 app.put("/api/items/:id", (req, res) => {
   const { name, manufacturer, model, quantity, location, description } = req.body;
@@ -65,4 +62,16 @@ app.put("/api/items/:id", (req, res) => {
       if (err) return res.status(500).json(err);
       res.sendStatus(200);
     });
+});
+
+// Health check, so the host can tell a live container from a dead one
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+// Hosts assign the port through PORT. Fall back to 3000 for local work.
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
